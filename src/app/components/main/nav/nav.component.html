@@ -1,0 +1,42 @@
+          <nav role="navigation">
+            <div id="menuToggle">
+              <input type="checkbox" #check/>
+                <span class='trait'></span>
+                <span class='trait'></span>
+                <span class='trait'></span>
+            <ul id="menu">
+              <li><a routerLink="" (click)="check.checked = false">Accueil</a></li>
+              <li><a routerLink="/associations" (click)="check.checked = false">Associations</a></li>
+              <li><a routerLink="/events" (click)="check.checked = false">Evénements</a></li>
+            </ul>
+           </div>
+            <a routerLink=""><img src='../../../../assets/logo.png' alt='logo rehist' /></a>
+           <button class="button_header" *ngIf="!isAuth" mat-raised-button routerLink="/sign-in">Connexion</button>
+           <button class="button_header" *ngIf="isAuth" mat-raised-button [matMenuTriggerFor]="monProfil">Mon profil <fa-icon id='faSortDown' [icon]="faSortDown"></fa-icon></button>
+            <mat-menu #monProfil="matMenu">
+              <button mat-menu-item routerLink="/createAssociation">
+                <fa-icon [icon]="faUserPlus"></fa-icon>
+                <span>Publier une association</span>
+                </button>
+              <button mat-menu-item routerLink="/myAssociations">
+                <fa-icon [icon]="faListOl"></fa-icon>
+                <span>Mes associations</span>
+              </button>
+              <button mat-menu-item routerLink="/createEvent">
+                <fa-icon [icon]="faCalendarPlus"></fa-icon>
+                <span>Publier un événement</span>
+              </button>
+              <button mat-menu-item routerLink="/myEvents">
+              <fa-icon [icon]="faListOl"></fa-icon>
+                <span>Mes événements</span>
+              </button>
+              <button mat-menu-item routerLink="/settings">
+                <fa-icon [icon]="faTools"></fa-icon>
+                <span>Mes paramètres</span>
+              </button>
+              <button mat-menu-item id="btn_deconnexion" (click)="logout()">
+                <fa-icon [icon]="faDoorOpen"></fa-icon>
+                <span>Déconnexion</span>
+              </button>
+            </mat-menu>
+          </nav>

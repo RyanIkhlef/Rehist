@@ -1,0 +1,52 @@
+<img class="banner" *ngIf="association" src="{{ association.banner ? association.banner : '../../../assets/default/default_banner.jpg' }}"
+     aria-label="Bannière de l'association" alt="Bannière de l'association"/>
+
+<main ngStyle.gt-md="width: 50%;">
+  <div id="header_event" *ngIf="association">
+    <img class="logo"  src="{{ association.logo ? association.logo : '../../../assets/default/default_logo.jpg' }}"
+         aria-label="Logo de l'association" alt="Logo de l'association"/>
+    <h2 *ngIf="association" aria-label="Nom de l'association">{{association.name}}</h2>
+    <h4 *ngIf="association" aria-label="Slogan de l'association">{{association.slogan}}</h4>
+  </div>
+
+  <p id="description" aria-label="Description de l'association">{{association?.description}}</p>
+  <div class="information" *ngIf="association">
+    <mat-card class="card_info">
+      <span>Période reconstituée</span>
+      <p aria-label="Periode reconstituée">{{association.period}}</p>
+    </mat-card>
+    <mat-card class="card_info">
+      <span>Type d'unité</span>
+      <p aria-label="Type d'untié">{{association.unitType.join(', ')}}</p>
+    </mat-card>
+    <mat-card class="card_info">
+      <span>Nombre de bénévoles</span>
+      <p aria-label="Nombre de bénévoles inscrit dans l'association">{{association.volunteer}}</p>
+    </mat-card>
+    <mat-card class="card_info">
+      <span>Réseaux sociaux</span>
+      <p class="social" aria-label="Liste des réseaux sociaux">
+        <a target="_blank" *ngFor="let social of association.social_network" href="{{social}}">
+          <fa-icon size="2x" class="check_icon" *ngIf='social.includes("facebook")' [icon]="faFacebookF" aria-label="Facebook de l'association"></fa-icon>
+          <fa-icon size="2x" class="check_icon" *ngIf='social.includes("youtube")' [icon]="faYoutube" aria-label="Chaine youtube de l'association"></fa-icon>
+          <fa-icon size="2x" class="check_icon" *ngIf='social.includes("twitter")' [icon]="faTwitter" aria-label="Compte twitter de l'association"></fa-icon>
+          <fa-icon size="2x" class="check_icon" *ngIf='social.includes("instagram")' [icon]="faInstagram" aria-label="Compte instagram de l'association"></fa-icon>
+        </a>
+      </p>
+    </mat-card>
+    <mat-card class="card_info card_info_line">
+      <span>Siège social</span>
+      <p aria-label="Adresse du siège sociale de l'association">{{association.address.split(",")[0]}}<br /> {{association.address.split(",")[1]+" "+association.address.split(",")[2]}}</p>
+    </mat-card>
+    <mat-card class="card_info card_info_line">
+      <span>Nous contacter</span>
+      <p aria-label="Adresse mail et numéro de téléphone de l'association">{{association.contact}}<br /> {{association.tel}} <br /><a aria-label="Site web de l'association" target="_blank" href="{{association.web}}">{{association.web}}</a></p>
+    </mat-card>
+  </div>
+  <div class="btn_event">
+    <button (click)="onClickPage('/contacter/')" mat-raised-button color="primary" aria-label="Contacter l'association">Nous contacter</button>
+    <button (click)="onClickPage('/rejoindre/')" mat-raised-button color="primary" aria-label="Rejoindre l'association">Nous rejoindre</button>
+    <button  (click)="onClickPage('/portfolio/')" mat-raised-button color="primary" aria-label="Regarder le portfolio de l'association">Photos</button>
+  </div>
+</main>
+

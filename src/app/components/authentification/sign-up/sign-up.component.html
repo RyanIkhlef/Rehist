@@ -1,0 +1,46 @@
+<div class="wrapper">
+  <h1>Créer votre compte</h1>
+  <p style="font-style: italic;">Les champs possédant un astérisque (*) sont obligatoire.</p>
+  <form [formGroup]="signUpForm"
+        (ngSubmit)="onSubmit()">
+    <mat-form-field appearance="legacy">
+      <mat-label>Nom</mat-label>
+      <input matInput formControlName="lastname" type="text" placeholder="Dupont" required/>
+    </mat-form-field>
+
+    <mat-form-field appearance="legacy">
+      <mat-label>Prénom</mat-label>
+      <input matInput formControlName="firstname" type="text" placeholder="Paul" required/>
+    </mat-form-field>
+
+    <mat-form-field appearance="legacy">
+      <mat-label>Email</mat-label>
+      <input matInput formControlName="email" type="email" placeholder="dupont.paul@exemple.com" required/>
+    </mat-form-field>
+
+    <mat-form-field appearance="legacy">
+      <mat-label>Mot de passe</mat-label>
+      <input matInput formControlName="password" type="password" required/>
+    </mat-form-field>
+
+    <mat-form-field appearance="legacy">
+      <mat-label>Confirmation</mat-label>
+      <input matInput formControlName="confirmPassword" type="password" required/>
+      <mat-error *ngIf="signUpForm.getError('notSame')">Les mots de passe ne correspondent pas.</mat-error>
+    </mat-form-field>
+
+    <button mat-raised-button type="submit" style="background-color:#33658A; color:white" [disabled]="signUpForm.invalid">Créer compte</button>
+  </form>
+  <p>
+    Déjà un compte ? <a routerLink="/sign-in" style="font-style: italic;">cliquez ici !</a>
+  </p>
+
+  <div class="create-with">
+    <h4>Créer avec</h4>
+    <div>
+      <img alt="Facebook" src="assets/authentification/logo_facebook.png" title="Créer compte avec votre compte Facebook" (click)="createWithFacebook()"/>
+      <img alt="Twitter" src="assets/authentification/logo_twiter.png" title="Créer compte avec votre compte Twitter" (click)="createWithTwitter()"/>
+      <img alt="Google" src="assets/authentification/logo_google.png" title="Créer compte avec votre compte Google" (click)="createWithGoogle()"/>
+    </div>
+  </div>
+</div>

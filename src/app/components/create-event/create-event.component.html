@@ -1,0 +1,274 @@
+<form [formGroup]="formGroup" (ngSubmit)="onSubmit()">
+  <h1>Publier mon événement</h1>
+  <mat-stepper orientation="vertical">
+    <mat-step>
+      <ng-template matStepLabel>Informations générales</ng-template>
+      <div class="btn_group">
+        <input button mat-stroked-button color="primary" type="file" accept="image/jpeg, image/png"
+               (change)="onUploadLogo($event)"
+               placeholder="Logo de votre association" id="input_logo"/>
+        <label for="input_logo" class="md-button md-raised md-primary">
+          <mat-icon>file_upload</mat-icon>Téléverser <br />votre logo</label>
+
+        <input type="file" accept="image/jpep, image/png" (change)="onUploadBanner($event)"
+               placeholder="Bannière de votre association" id="input_banniere"/>
+        <label for="input_banniere" class="md-button md-raised md-primary">
+          <mat-icon>file_upload</mat-icon>Téléverser <br />votre bannière</label>
+      </div>
+      <div class="column">
+        <mat-form-field class="example-full-width" appearance="standard">
+          <mat-label>Titre de l'événement</mat-label>
+          <input matInput formControlName="name" placeholder="Ex: 200e anniversaire de la mort de l'Empereur" required>
+        </mat-form-field>
+
+        <mat-form-field class="example-chip-list" appearance="standard">
+          <mat-label>Type d'événement</mat-label>
+          <mat-chip-list #chipList aria-label="Type d'événement selection">
+            <mat-chip *ngFor="let t of types" [selectable]="selectable" [removable]="removable" (removed)="remove(t)">
+              {{t}}
+              <button matChipRemove *ngIf="removable">
+                <mat-icon>cancel</mat-icon>
+              </button>
+            </mat-chip>
+            <input placeholder="Nouveau type..." [matAutocomplete]="auto"
+                   [matChipInputFor]="chipList" [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                   (matChipInputTokenEnd)="add($event)" required>
+          </mat-chip-list>
+          <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+            <mat-option *ngFor="let ty of filteredType | async" [value]="ty">
+              {{ty}}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+
+        <mat-form-field appearance="standard">
+          <mat-label>Dates</mat-label>
+          <mat-date-range-input [rangePicker]="picker">
+            <input formControlName="date_begin" matStartDate placeholder="Date de début">
+            <input matEndDate formControlName="date_end" placeholder="Date de fin">
+          </mat-date-range-input>
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-date-range-picker #picker></mat-date-range-picker>
+        </mat-form-field>
+
+        <mat-form-field class="example-full-width" appearance="standard">
+          <mat-label>Lieu de l'événement</mat-label>
+          <input matInput formControlName="address" type="text" placeholder="70 rue denis Papin, 95001, Paris"
+                 (input)="onAddressInput($event)" list="addressData" required/>
+          <datalist id="addressData">
+            <option *ngFor="let address of addressData" [value]="address">{{ address }}</option>
+          </datalist>
+        </mat-form-field>
+
+        <!--<div class="btn_group">
+          <button class="btn" mat-raised-button color="primary">Selectionner les associations</button>
+        </div>-->
+        <div>
+          <button type="button" mat-button matStepperNext>Suivant</button>
+        </div>
+      </div>
+    </mat-step>
+    <mat-step>
+      <ng-template matStepLabel>Présenter votre événement</ng-template>
+      <div class="column">
+
+        <mat-form-field class="example-full-width" appearance="standard">
+          <mat-label>Slogan de l'événement</mat-label>
+          <input matInput formControlName="slogan" placeholder="Ex : Impossible n'est pas français">
+        </mat-form-field>
+
+        <mat-form-field class="example-full-width" appearance="standard">
+          <mat-label>Description</mat-label>
+          <textarea matInput formControlName="description"
+                    placeholder="Ex : Venez revivre l'histoire de la bataille de Waterloo ..." required></textarea>
+        </mat-form-field>
+
+        <mat-form-field class="example-full-width" appearance="standard">
+          <mat-label>Programme</mat-label>
+          <textarea matInput formControlName="program"
+                    placeholder="Expliquez le programme de la journée ou du week-end" required></textarea>
+        </mat-form-field>
+        <!--<button mat-raised-button color="primary">Programme image</button>-->
+
+        <mat-form-field class="example-full-width" appearance="standard">
+          <mat-label>Nombre de bénévoles</mat-label>
+          <input formControlName="volunteer" matInput placeholder="75">
+        </mat-form-field>
+
+        <mat-form-field appearance="standard">
+          <mat-label>Type d'unité</mat-label>
+          <mat-select formControlName="unitType" multiple required>
+            <mat-option *ngFor="let unit of unitTypeValues;" value="{{unit}}">{{ unit }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="standard">
+          <mat-label>Période reconstituée</mat-label>
+          <mat-select formControlName="period" required>
+            <mat-option *ngFor="let period of periodValues;" value="{{ period }}">{{ period }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div>
+        <button mat-button matStepperPrevious type="button">Retour</button>
+        <button mat-button matStepperNext type="button">Suivant</button>
+      </div>
+    </mat-step>
+    <mat-step>
+      <ng-template matStepLabel>Réservation et paiement</ng-template>
+      <div class="column">
+        <mat-radio-group aria-label="Select an option" appearance="standard">
+          <mat-label>L'événement est-il payant ?</mat-label>
+          <mat-radio-button (change)="isFree(true)" value="Oui">Oui</mat-radio-button>
+          <mat-radio-button (change)="isFree(false)" value="Non">Non</mat-radio-button>
+        </mat-radio-group>
+        <div class="price_age_grp" *ngIf="isfree">
+          <div formArrayName="price">
+            <div *ngFor="let _ of getPrice().controls; let i = index" class="price_grp">
+              <mat-form-field appearance="standard">
+                <mat-label>Catégorie de personne</mat-label>
+                <input matInput [formControlName]="i" placeholder="Ex: Adulte" type="text" value="" />
+              </mat-form-field>
+            </div>
+          </div>
+
+          <div formArrayName="age">
+            <div *ngFor="let _ of getAge().controls; let i = index" class="age_grp">
+              <mat-form-field appearance="standard" class="price_input">
+                <mat-label>Prix</mat-label>
+                <input matInput [formControlName]="i" type="number" placeholder="0" type="number" value="0">
+                <span matSuffix>€&nbsp;</span>
+              </mat-form-field>
+              <button *ngIf="getAge().controls.length > 1" type="button" (click)="onDeleteField(i)" color="warn" mat-icon-button>
+                <mat-icon>clear</mat-icon>
+              </button>
+
+              <button *ngIf="getAge().length-1 === i" (click)="onAddPricePerAge()"
+                      type="button" mat-mini-fab color="primary" aria-label="Ajouter une catégorie">
+                <mat-icon>add</mat-icon>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <mat-radio-group aria-label="Select an option" appearance="standard">
+          <mat-label>Faut-il réserver ?</mat-label>
+          <mat-radio-button (change)="isReserved(true)" value="Oui"> Oui</mat-radio-button>
+          <mat-radio-button (change)="isReserved(false)" value="Non"> Non</mat-radio-button>
+        </mat-radio-group>
+        <div *ngIf="isreserved" style="display: contents">
+          <mat-form-field class="example-full-width" appearance="standard">
+            <mat-label>Lien de réservation</mat-label>
+            <input formControlName="reservation_link" matInput placeholder="Ex: ">
+          </mat-form-field>
+        </div>
+      </div>
+      <div>
+        <button mat-button type="button" matStepperPrevious>Retour</button>
+        <button mat-button type="button" matStepperNext>Suivant</button>
+      </div>
+    </mat-step>
+    <mat-step>
+      <ng-template matStepLabel>Réseaux sociaux</ng-template>
+      <div class="column">
+        <mat-form-field class="example-full-width" appearance="standard">
+          <mat-label>Trailer</mat-label>
+          <input matInput formControlName="trailer" placeholder="Ex: https://youtube.com/dorjtkdlzlrk45">
+        </mat-form-field>
+
+        <mat-form-field class="example-full-width" appearance="standard">
+          <mat-label>Site internet</mat-label>
+          <input matInput formControlName="web" placeholder="Ex: https://rehist.fr" value="">
+        </mat-form-field>
+
+        <mat-form-field class="example-full-width" appearance="standard">
+          <mat-label>Youtube</mat-label>
+          <mat-icon matPrefix>
+            <fa-icon size="1x" class="check_icon" [icon]="faYoutube"></fa-icon>
+          </mat-icon>
+          <input matInput formControlName="youtube" placeholder="https://youtube.com" value="">
+        </mat-form-field>
+
+        <mat-form-field class="example-full-width" appearance="standard">
+          <mat-label>Instagram</mat-label>
+          <mat-icon matPrefix>
+            <fa-icon size="1x" class="check_icon" [icon]="faInstagram"></fa-icon>
+          </mat-icon>
+          <input matInput formControlName="instagram" placeholder="https://instagram.com" value="">
+        </mat-form-field>
+
+        <mat-form-field class="example-full-width" appearance="standard">
+          <mat-label>Facebook</mat-label>
+          <mat-icon matPrefix>
+            <fa-icon size="1x" class="check_icon" [icon]="faFacebookF"></fa-icon>
+          </mat-icon>
+          <input matInput formControlName="facebook" value="" placeholder="https://facebook.com">
+        </mat-form-field>
+
+        <mat-form-field class="example-full-width" appearance="standard">
+          <mat-label>Twitter</mat-label>
+          <mat-icon matPrefix>
+            <fa-icon size="1x" class="check_icon" [icon]="faTwitter"></fa-icon>
+          </mat-icon>
+          <input matInput formControlName="twitter" value="" placeholder="https://twitter.com">
+        </mat-form-field>
+      </div>
+      <div>
+        <button type="button" mat-button matStepperPrevious>Retour</button>
+        <button type="button" mat-button matStepperNext>Suivant</button>
+      </div>
+    </mat-step>
+    <mat-step>
+      <ng-template matStepLabel>Accessibilité</ng-template>
+      <div class="column">
+        <p>Les points ci-dessous sont-ils autorisés/prévus dans l'organisation de votre événement ?</p>
+        <section class="example-section">
+          <mat-checkbox class="example-margin" value="accesHandicape" (change)="onCheckedAccessibilities($event)">Accès
+            handicapé
+          </mat-checkbox>
+          <mat-checkbox class="example-margin" value="restaurationSurPlace" (change)="onCheckedAccessibilities($event)">
+            Restauration sur place
+          </mat-checkbox>
+          <mat-checkbox class="example-margin" value="accesWC" (change)="onCheckedAccessibilities($event)">Accès WC
+          </mat-checkbox>
+          <mat-checkbox class="example-margin" value="parking" (change)="onCheckedAccessibilities($event)">Parking
+            dédié
+          </mat-checkbox>
+          <mat-checkbox class="example-margin" value="animauxAutorises" (change)="onCheckedAccessibilities($event)">
+            Animaux autorisés
+          </mat-checkbox>
+        </section>
+      </div>
+      <div>
+        <button type="button" mat-button matStepperPrevious>Retour</button>
+        <button type="button" mat-button matStepperNext>Suivant</button>
+      </div>
+    </mat-step>
+    <mat-step>
+      <ng-template matStepLabel>Informations de contact</ng-template>
+      <div class="column">
+        <p>Si vous souhaitez pouvoir être contacté par les utilisateurs, veuillez remplir les champs ci-dessous</p>
+
+        <mat-form-field class="example-full-width" appearance="standard">
+          <mat-label>Numéro de téléphone</mat-label>
+          <input matInput placeholder="0603559115" class="example-tel-input-element" formControlName="phone">
+        </mat-form-field>
+
+        <mat-form-field appearance="standard">
+          <mat-label>Adresse email</mat-label>
+          <input matInput placeholder="pat@example.com" formControlName="email">
+        </mat-form-field>
+      </div>
+      <div>
+        <button mat-button matStepperPrevious type="button">Retour</button>
+        <button type="submit" mat-button matStepperNext [disabled]="formGroup.invalid">Valider</button>
+        <div *ngIf="isUploadingLogo || isUploadingBanner || isUploading">
+          <p>Votre page est en création, veuillez patienter...</p>
+          <mat-progress-spinner color="primary"
+                                mode="indeterminate"
+                                [diameter]="40">
+          </mat-progress-spinner>
+        </div>
+      </div>
+    </mat-step>
+  </mat-stepper>
+</form>

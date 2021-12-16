@@ -1,0 +1,150 @@
+<h1>Présenter votre association</h1>
+
+<form [formGroup]="formGroup" (ngSubmit)="onSubmit()">
+  <mat-stepper orientation="vertical">
+    <mat-step>
+      <ng-template matStepLabel>Informations générales</ng-template>
+      <div class="btn_group">
+        <input button mat-stroked-button color="primary" type="file" accept="image/jpeg, image/png"
+               (change)="onUploadLogo($event)"
+               placeholder="Logo de votre association" id="input_logo"/>
+        <label for="input_logo" class="md-button md-raised md-primary">
+          <mat-icon>file_upload</mat-icon>Téléverser <br />votre logo</label>
+
+        <input type="file" accept="image/jpep, image/png" (change)="onUploadBanner($event)"
+               placeholder="Bannière de votre association" id="input_banniere"/>
+        <label for="input_banniere" class="md-button md-raised md-primary">
+          <mat-icon>file_upload</mat-icon>Téléverser <br />votre bannière</label>
+      </div>
+      <div class="column">
+        <mat-form-field appearance="legacy">
+          <mat-label>Nom de l'association</mat-label>
+          <input matInput formControlName="name" type="text" placeholder="" required/>
+          <mat-error *ngIf="formGroup.get('name')!.hasError('pattern')">Le nom contient des caractères interdit (/)
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="legacy">
+          <mat-label>Nom du président</mat-label>
+          <input matInput formControlName="firstname" type="text" placeholder="Dupont" required/>
+        </mat-form-field>
+        <mat-form-field appearance="legacy">
+          <mat-label>Prénom du président</mat-label>
+          <input matInput formControlName="lastname" type="text" placeholder="Michel" required/>
+        </mat-form-field>
+
+        <mat-form-field appearance="legacy">
+          <mat-label>Siège de l'association</mat-label>
+          <input matInput formControlName="address" type="text" placeholder="70 rue denis Papin, 95001, Paris"
+                 (input)="onAddressInput($event)" list="addressData" required/>
+          <datalist id="addressData">
+            <option *ngFor="let address of addressData" [value]="address">{{ address }}</option>
+          </datalist>
+        </mat-form-field>
+      </div>
+      <div>
+        <button mat-button matStepperNext type="button">Suivant</button>
+      </div>
+    </mat-step>
+
+    <mat-step>
+      <ng-template matStepLabel>Présenter votre association</ng-template>
+      <div class="column">
+        <mat-form-field appearance="standard">
+          <mat-label>Slogan</mat-label>
+          <input matInput formControlName="slogan" type="text" placeholder=""/>
+        </mat-form-field>
+        <mat-form-field appearance="standard">
+          <mat-label>Description</mat-label>
+          <textarea matInput formControlName="description" required></textarea>
+        </mat-form-field>
+        <mat-form-field appearance="standard">
+          <mat-label>Nombre de bénévoles</mat-label>
+          <input matInput formControlName="numberOfVolunteers" type="number" min="0" step="1" required/>
+        </mat-form-field>
+        <mat-form-field appearance="standard">
+          <mat-label>Type d'unité</mat-label>
+          <mat-select formControlName="unitType" multiple>
+            <mat-option *ngFor="let unit of unitTypeValues;" value="{{unit}}">{{ unit }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="standard">
+          <mat-label>Période reconstituée</mat-label>
+          <mat-select formControlName="period" required>
+            <mat-option *ngFor="let period of periodValues;" value="{{ period }}">{{ period }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+<!--        <input type="file" accept="image/jpeg, image/png, video/mp4, video/avi"-->
+<!--               (change)="onUploadImagesAndVideos($event)" multiple-->
+<!--               placeholder="Ajouter des images & vidéos pour votre association"/>-->
+      </div>
+      <div>
+        <button mat-button matStepperPrevious type="button">Retour</button>
+        <button mat-button matStepperNext type="button">Suivant</button>
+      </div>
+    </mat-step>
+    <mat-step>
+      <ng-template matStepLabel>Réseaux sociaux & contact</ng-template>
+      <div class="column">
+        <div formArrayName="socialNetworks">
+          <h4>Réseaux sociaux</h4>
+          <div *ngFor="let socialNetwork of getSocialNetworks().controls; let i = index">
+            <mat-form-field appearance="standard">
+              <mat-label>Lien vers votre page</mat-label>
+              <input matInput [formControlName]="i" type="text"/>
+            </mat-form-field>
+          </div>
+          <button type="button" mat-icon-button (click)="onAddSocialNetwork()">
+            <mat-icon>add_circle</mat-icon>
+          </button>
+        </div>
+        <mat-form-field appearance="standard">
+          <mat-label>Site web</mat-label>
+          <input matInput formControlName="website" type="text" placeholder="www.rehist.fr"/>
+        </mat-form-field>
+        <mat-form-field appearance="standard">
+          <mat-label>Email</mat-label>
+          <input matInput formControlName="email" type="email" placeholder="exemple@exemple.com"/>
+        </mat-form-field>
+        <mat-form-field appearance="standard">
+          <mat-label>Téléphone</mat-label>
+          <input matInput formControlName="tel" type="tel" placeholder="0607080910"/>
+          <mat-error *ngIf="formGroup.get('tel')!.hasError('pattern')">Vérifiez le format de votre numéro de
+            téléphone.
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div>
+        <button mat-button matStepperPrevious type="button">Retour</button>
+        <button mat-button matStepperNext type="button">Suivant</button>
+      </div>
+    </mat-step>
+    <mat-step>
+      <ng-template matStepLabel>Recrutement</ng-template>
+      <div class="column">
+        <mat-form-field appearance="standard">
+          <mat-label>Recrutez-vous des bénévoles ?</mat-label>
+          <mat-select formControlName="recruitment" [(value)]="volunteers">
+            <mat-option value="true">Oui</mat-option>
+            <mat-option value="false">Non</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="standard">
+          <mat-label>Condition de recrutement</mat-label>
+          <textarea matInput formControlName="recruitmentCondition" placeholder="Être majeur"></textarea>
+        </mat-form-field>
+      </div>
+      <div>
+        <button mat-button matStepperPrevious type="button">Retour</button>
+        <button type="submit" mat-button matStepperNext [disabled]="formGroup.invalid">Valider</button>
+        <div *ngIf="isUploadingLogo || isUploadingBanner || isUploading">
+          <p>Votre page est en création, veuillez patienter...</p>
+          <mat-progress-spinner color="primary"
+                                mode="indeterminate"
+                                [diameter]="40">
+          </mat-progress-spinner>
+        </div>
+      </div>
+    </mat-step>
+  </mat-stepper>
+</form>

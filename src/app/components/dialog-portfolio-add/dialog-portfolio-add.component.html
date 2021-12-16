@@ -1,0 +1,39 @@
+<h1 mat-dialog-title>Ajouter mon media</h1>
+<div class="column" mat-dialog-content>
+  <mat-form-field appearance="standard">
+    <mat-label>Quel média voulez-vous publier ?</mat-label>
+    <mat-select [(value)]="selected" [(ngModel)]="data.selectedValue">
+      <mat-option value="photo">Photo</mat-option>
+      <mat-option value="video">Video</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <input (change)="uploadImg($event, data)" *ngIf="selected === 'photo'" button mat-stroked-button color="primary" type="file" accept="image/jpeg, image/png" placeholder="Media de type image" id="input_logo"/>
+  <mat-form-field *ngIf="selected === 'video'" appearance="standard">
+    <mat-icon matPrefix>
+      <fa-icon size="1x" class="check_icon" [icon]="faYoutube"></fa-icon>
+    </mat-icon>
+    <mat-label>Lien de ma vidéo Youtube</mat-label>
+    <input matInput [(ngModel)]="data.urlVideo">
+  </mat-form-field>
+
+  <mat-form-field appearance="standard">
+    <mat-label>Titre</mat-label>
+    <input [(ngModel)]="data.titre" matInput>
+  </mat-form-field>
+  <mat-form-field appearance="standard">
+    <mat-label>Choose a date</mat-label>
+    <input [(ngModel)]="data.date" matInput [matDatepicker]="picker">
+    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+  </mat-form-field>
+
+  <mat-form-field appearance="standard">
+    <mat-label>Lieu</mat-label>
+    <input matInput [(ngModel)]="data.lieu">
+  </mat-form-field>
+</div>
+<div class="btn" mat-dialog-actions>
+  <button mat-button name="annuler" (click)="close()">Annuler</button>
+  <button mat-button name="valider" [disabled]="(data.selectedValue == 'photo' && data.urlPhoto == null ) || (data.selectedValue == 'video' && data.urlVideo == '')  || data.date == null || data.lieu == '' || data.titre == '' || data.selectedValue == ''" [mat-dialog-close]="data">Valider</button>
+</div>

@@ -1,0 +1,33 @@
+.wrapper {
+  margin-left: 50px;
+}
+
+.wrapper h2 {
+  text-align: center;
+}
+
+.dataWrapper mat-card {
+  margin-bottom: 10px;
+}
+
+
+.buttonsWrapper {
+  display: inline-grid;
+}
+
+.buttonsWrapper button {
+  color: white;
+  margin-bottom: 20px;
+}
+
+.myPage {
+  background-color: #33658A;
+}
+
+.changePassword {
+  background-color: #F6AE2D;
+}
+
+.deleteData {
+  background-color: red;
+}

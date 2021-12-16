@@ -1,0 +1,40 @@
+.wrapper {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  width: 200px;
+  margin: 0 auto 0 auto;
+}
+
+.signIn-with {
+  width: fit-content;
+  padding: 0 10px 15px 10px;
+  margin: 50px auto 10px auto;
+  box-shadow: 1px 1px 10px #aaa;
+  border-radius: 10px;
+}
+
+.signIn-with h4 {
+  text-align: left;
+}
+
+.signIn-with div{
+  margin: 0 20px 0 20px;
+  display: inline-flex;
+  grid-gap: 30px;
+}
+
+.signIn-with div img {
+  height: 64px;
+  width: 64px;
+}
+
+.signIn-with div img:hover {
+  cursor: pointer;
+  box-shadow: 1px 1px 10px #aaa;
+}

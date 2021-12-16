@@ -1,0 +1,45 @@
+<h1>Mes associations</h1>
+
+<div ngStyle.gt-md="display: grid;
+                     grid-template-columns: repeat(3, 300px);
+                     grid-gap: 5px;
+                     grid-auto-rows: minmax(100px, auto);
+                     justify-content: center;">
+
+  <mat-card *ngFor="let association of associations"
+            ngStyle.gt-md="height: 250px;
+                           margin-right: 5px;
+                           border-radius: 20px 20px 0 0;
+                           display: flex;
+                           flex-direction: column;
+                           padding: 0 0 0;"
+            ngStyle.lt-lg="margin-bottom: 10px;"
+            routerLink="/association/{{ association.uid }}">
+    <mat-card-content ngStyle.lt-lg="display: flex;">
+      <div ngStyle.lt-lg="width: 60px; overflow: auto;"
+           ngStyle.gt-md="width: inherit;">
+        <img class="logo" fxHide.gt-md alt="Logo association {{association.name}}" src="{{ association.logo }}"/>
+        <img class="banner" fxHide.lt-lg alt="bannière de l'association {{ association.name }}" src="{{ association.banner }}"/>
+      </div>
+      <div style="width: fit-content;
+                  height: fit-content"
+           ngStyle.gt-md="display: block;
+                          margin: 0 auto 0 auto;"
+           ngStyle.lt-lg="margin: auto 0 auto 15px;">
+        <h2>{{ association.name }}</h2>
+      </div>
+      <div class="buttons"
+           ngStyle.lt-lg=" display: grid;
+                           margin: auto 0 auto auto;"
+           ngStyle.gt-md="margin-top: 20px;">
+        <button mat-stroked-button (click)="onUpdateClick(association)" type="button" class="updateButton" ngStyle.gt-md="margin-right: 2px;" ngStyle.lt-lg="margin-bottom: 2px;">Modifier</button>
+        <button mat-stroked-button (click)="onDeleteAssociation(association.uid)" type="button" class="deleteButton" ngStyle.gt-md="margin-right: 2px;" ngStyle.lt-lg="margin-top: 2px;">Supprimer</button>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>
+
+<div>
+  <button mat-raised-button routerLink="/createAssociation" type="button" class="addButton"><mat-icon class="addCircle">add_circle</mat-icon>Ajouter une association</button>
+</div>
+

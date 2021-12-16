@@ -1,0 +1,106 @@
+<img class="banner" *ngIf="event" src="{{ event.banner ? event.banner : '../../../assets/default/default_banner.jpg' }}"/>
+<main ngStyle.gt-md="width: 50%">
+  <div id="header_event" *ngIf="event">
+    <img class="logo"  src="{{ event.logo ? event.logo : '../../../assets/default/default_logo.jpg' }}"/>
+    <h2 *ngIf="event">{{event.name}}</h2>
+    <h4 *ngIf="event">{{event.slogan}}</h4>
+  </div>
+
+  <div id="video_event" *ngIf="event">
+    <iframe
+      [src]='trailer'>
+    </iframe>
+  </div>
+
+  <p id="description" *ngIf="event">
+    {{event.description}}  </p>
+  <div class="information" *ngIf="event">
+    <mat-card class="card_info">
+      <span>Type d'événement</span>
+      <p>{{event.types_of_event.split(',').join(', ')}}</p>
+    </mat-card>
+    <mat-card class="card_info">
+      <span>Période reconstituée</span>
+      <p>{{event.period}}</p>
+    </mat-card>
+    <mat-card class="card_info">
+      <span>Types d'unité</span>
+      <p>{{event.unitType.join(', ')}}</p>
+    </mat-card>
+    <mat-card class="card_info">
+      <span>Nombre de participants</span>
+      <p>{{event.volunteer}}</p>
+    </mat-card>
+  </div>
+  <mat-card class="large_card" *ngIf="event">
+    <span>Programme</span>
+    <p class="program">{{event.program}}</p>
+  </mat-card>
+  <div class="btn_event">
+    <button mat-raised-button color="primary" disabled>Associations participantes</button>
+  </div>
+  <h2>Informations pratiques</h2>
+  <div class="information" *ngIf="event">
+    <mat-card class="card_info">
+      <span>Adresse</span>
+      <p>{{event.address.split(",")[0]}}<br /> {{event.address.split(",")[1]+" "+event.address.split(",")[2]}}</p>
+    </mat-card>
+    <mat-card class="card_info" >
+      <span>Date</span>
+      <p>du {{event.date_begin| date:"dd/MM/yyyy"}} au {{event.date_end | date:"dd/MM/yyyy"}}</p>
+    </mat-card>
+    <mat-card class="card_info">
+      <span>Tarif</span>
+      <p class="no-margin-p" *ngFor="let e of event.price_per_age">{{e}}</p>
+    </mat-card>
+    <mat-card class="card_info">
+      <span>Réseaux sociaux</span>
+      <p class="social">
+        <a target="_blank" *ngFor="let social of event.social_network" href="{{social}}">
+          <fa-icon size="2x" class="check_icon" *ngIf='social.includes("facebook")' [icon]="faFacebookF"></fa-icon>
+          <fa-icon size="2x" class="check_icon" *ngIf='social.includes("youtube")' [icon]="faYoutube"></fa-icon>
+          <fa-icon size="2x" class="check_icon" *ngIf='social.includes("twitter")' [icon]="faTwitter"></fa-icon>
+          <fa-icon size="2x" class="check_icon" *ngIf='social.includes("instagram")' [icon]="faInstagram"></fa-icon>
+        </a>
+      </p>
+    </mat-card>
+  </div>
+  <mat-card class="large_card">
+    <span>Accessibilité</span>
+    <div>
+      <div>
+        <p>
+          <fa-icon class="check_icon" *ngIf="accesHandicape" [icon]="faCheck"></fa-icon>
+          <fa-icon class="error_icon" *ngIf="!accesHandicape" [icon]="faTimes"></fa-icon>
+          Accès handicapé
+        </p>
+        <p>
+          <fa-icon class="check_icon" *ngIf="restaurationSurPlace" [icon]="faCheck"></fa-icon>
+          <fa-icon class="error_icon" *ngIf="!restaurationSurPlace" [icon]="faTimes"></fa-icon>
+          Restauration sur place
+        </p>
+        <p>
+          <fa-icon class="check_icon" *ngIf="accesWc" [icon]="faCheck"></fa-icon>
+          <fa-icon class="error_icon" *ngIf="!accesWc" [icon]="faTimes"></fa-icon>
+          Accès WC
+        </p>
+      </div>
+      <div>
+        <p>
+          <fa-icon class="check_icon" *ngIf="parking" [icon]="faCheck"></fa-icon>
+          <fa-icon class="error_icon" *ngIf="!parking" [icon]="faTimes"></fa-icon>
+          Parking prévu
+        </p>
+        <p>
+          <fa-icon class="check_icon" *ngIf="animauxAutorises" [icon]="faCheck"></fa-icon>
+          <fa-icon class="error_icon" *ngIf="!animauxAutorises" [icon]="faTimes"></fa-icon>
+          Animaux autorisés
+        </p>
+      </div>
+    </div>
+  </mat-card>
+  <div class="btn_event">
+    <button  (click)="onClickPage('/contacter/')" mat-raised-button color="primary">Contact</button>
+    <a href="{{event?.reservation_Link}}" target="_blank"><button *ngIf="event && event.reservation_Link"  mat-raised-button color="primary">Réservation</button></a>
+  </div>
+</main>

@@ -1,0 +1,138 @@
+.banner {
+  width: 100%;
+  height: 250px;
+  object-fit: cover;
+}
+
+main {
+  width: 90%;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+#header_event {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: -60px;
+}
+
+.logo {
+  width: 120px;
+  height: 120px;
+  object-fit: contain;
+  border-radius: 100%;
+  background-color: white;
+  border: 5px solid white;
+}
+
+#header_event h4,h2 {
+  margin: 0;
+}
+
+#video_event {
+  margin-top: 20px;
+  display: flex;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+#video_event iframe {
+  border-radius: 5%;
+  max-width: 400px;
+  width: 100%;
+  height: 200px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+#description {
+  text-align: justify;
+  margin-top: 20px;
+  white-space: pre-line;
+}
+
+.information {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.card_info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 38%;
+  margin-bottom: 10px;
+  justify-content: center;
+}
+
+.card_info_line {
+  width: 90% !important;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.card_info span, .large_card span {
+  font-weight: bold;
+  margin-bottom: 5px;
+  text-align: center;
+}
+
+.card_info p {
+  text-align: center;
+}
+
+.social fa-icon {
+  color: darkorange;
+}
+
+.social  {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  width: 90%;
+}
+
+.no-margin-p {
+  margin: 0;
+}
+
+.btn_event{
+  margin-right: auto;
+  margin-left: auto;
+  margin-top: 20px;
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.btn_event button {
+  margin-bottom: 10px;
+}
+
+h2 {
+  margin-top: 20px;
+}
+
+.error_icon {
+  color: darkred;
+}
+
+.check_icon {
+  color: darkgreen;
+}
+
+.large_card > div {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  margin-top: 10px;
+}
+
+.program {
+  white-space: pre-line;
+}

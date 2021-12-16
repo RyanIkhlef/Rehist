@@ -1,0 +1,124 @@
+<h2>Liste des événements</h2>
+
+<div ngStyle.gt-md="width: fit-content; margin: 0 auto 0 auto;">
+  <form #searchForm="ngForm" (reset)="onResetForm(searchForm)">
+    <mat-form-field appearance="legacy" class="search_bar" ngStyle.gt-md="width: 450px">
+      <mat-label>Rechercher un événement<mat-icon>search</mat-icon></mat-label>
+      <input matInput type="search" placeholder="16e Régiment d'Infanterie Légère" (input)="onSearch($event)" [(ngModel)]="searchContent" name="searchField"/>
+    </mat-form-field>
+
+    <div class="secondary_inputs">
+      <div class="geolocation">
+        <mat-form-field appearance="legacy">
+          <mat-label>Localisation</mat-label>
+          <mat-select [(ngModel)]="locationSelected" name="locationSelector">
+            <mat-option value="GPS" (click)="onGeolocation()">Géolocalisation</mat-option>
+            <mat-option value="other" (click)="manualGeolocation=true">Autre</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="legacy" *ngIf="manualGeolocation">
+          <mat-label>Ville dans laquelle vous voulez assister</mat-label>
+          <input matInput type="text" placeholder="Lille" (change)="onManualGeolocation($event)" (input)="onAddressInput($event)" list="addressData"/>
+          <datalist id="addressData">
+            <option *ngFor="let address of addressData" [value]="address">{{ address }}</option>
+          </datalist>
+        </mat-form-field>
+      </div>
+
+      <mat-form-field appearance="legacy" class="period">
+        <mat-label>Date</mat-label>
+        <mat-date-range-input [rangePicker]="picker">
+          <input matStartDate placeholder="début" #dateRangeStart/>
+          <input matEndDate placeholder="fin" #dateRangeEnd (dateChange)="onSearchByDate(dateRangeStart, dateRangeEnd)"/>
+        </mat-date-range-input>
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-date-range-picker #picker></mat-date-range-picker>
+      </mat-form-field>
+
+      <mat-form-field appearance="legacy" class="unit">
+        <mat-label>Unité</mat-label>
+        <mat-select multiple (selectionChange)="onSearchByUnitType($event)" [(ngModel)]="unitSelected" name="unitSelector">
+          <mat-option *ngFor="let unit of unitTypeValues;" value="{{ unit }}">{{ unit }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <div class="volunteer" ngStyle.gt-md="display: initial;">
+        <mat-form-field appearance="legacy">
+          <mat-label>Nombre de bénévoles</mat-label>
+          <input matInput type="number" min="0" step="1" (input)="onSearchByVolunteer($event)" #number [(ngModel)]="volunteerContent" name="volunteerField"/>
+        </mat-form-field>
+
+        <mat-radio-group *ngIf="number.value" [(ngModel)]="numberOfVolunteers" name="volunteersRadioGroup"  ngStyle.gt-md="margin-left: 20px;" (change)="onComparisonChange(number.value)">
+          <mat-radio-button value="moreThan" style="margin-right: 10px;">Plus de {{ number.value }} bénévoles</mat-radio-button>
+          <mat-radio-button value="lessThan">Moins de {{ number.value }} bénévoles</mat-radio-button>
+        </mat-radio-group>
+      </div>
+    </div>
+    <div class="filter">
+      <span><strong>{{ events.length }}</strong> résultats</span>
+      <button type="reset" mat-button class="reset_button">Effacer les filtres <mat-icon>refresh</mat-icon></button>
+    </div>
+  </form>
+</div>
+
+<div class="list event-list">
+  <div class="event-content" ngStyle.gt-md="display: grid;
+                                            grid-template-columns: repeat(3, 300px);
+                                            grid-gap: 5px;
+                                            grid-auto-rows: minmax(100px, auto);
+                                            justify-content: center;">
+
+    <mat-card *ngFor="let event of events"
+              ngStyle.gt-md="height: 300px;
+                               margin-right: 5px;
+                               border-radius: 20px 20px 0 0;
+                               display:flex;
+                               flex-direction:column;
+                               padding: 0 0 0;"
+              ngStyle.lt-lg="margin-bottom: 10px;"
+              routerLink="/event/{{ event.uid }}">
+
+      <mat-card-content ngStyle.lt-lg="display: flex;">
+        <div style="display: flex" ngStyle.lt-lg="width: 60px; overflow: auto;" ngStyle.gt-md="width: inherit;">
+          <img class="logo" fxHide.gt-md src="{{ event.logo ? event.logo : '../../../assets/default/default_logo.jpg' }}"/>
+          <img class="banner" fxHide.lt-lg src="{{ event.banner ? event.banner : '../../../assets/default/default_banner.jpg' }}"/>
+        </div>
+
+        <div style="margin-left: 20px; width: 70%">
+          <h1 ngStyle.gt-md="margin-bottom: 30px;">{{ event.name }}</h1>
+          <p class="description">{{ event.description }}</p>
+        </div>
+
+        <div ngStyle.lt-lg="position: absolute;
+                              right: 0;
+                              top: 10%;"
+             ngStyle.gt-md="position: absolute;
+                              left: 0;
+                              bottom: 0;"
+             class="icons">
+
+        </div>
+        <div class="localisation"
+             ngStyle.lt-lg="right: 5px;
+                              bottom: 5px;"
+             ngStyle.gt-md="left: 20px;
+                              bottom: 32px">
+          <span>{{ event.address }}</span>
+        </div>
+        <div class="date"
+             ngStyle.lt-lg="right: 5px;
+                              bottom: 5px;"
+             ngStyle.gt-md="left: 20px;
+                              bottom: 32px">
+          <span ngStyle.gt-md="  position: absolute;bottom: 5px;left: 10px;">{{ event.date_begin | date:"dd/MM/yyyy" }}</span>
+        </div>
+        <div class="show-more" fxHide.lt-lg>
+          <button mat-button routerLink="/event/{{ event.uid }}">Voir l'événement <fa-icon [icon]="['fas', 'chevron-right']"></fa-icon></button>
+        </div>
+
+      </mat-card-content>
+    </mat-card>
+    <p *ngIf="events.length === 0">Aucun événement ne correspond à votre recherche.</p>
+  </div>
+</div>

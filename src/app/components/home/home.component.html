@@ -1,0 +1,163 @@
+<div>
+  <div class="banner">
+    <div class="black-filter"></div>
+    <img src="../../../assets/rehist_banner.png" alt="bannière rehist"/>
+    <p>Retrouvez tous les événements et associations de reconstitution historique</p>
+  </div>
+
+  <div class="event-list">
+    <div class="list-header" ngStyle.gt-md="margin-right: 25%;margin-left: 25%;">
+      <h3>Prochains événements</h3>
+      <button class="show-all" mat-raised-button routerLink="/events">voir tous
+        <fa-icon [icon]="['fas', 'chevron-right']"></fa-icon>
+      </button>
+    </div>
+    <div class="event-content" ngStyle.gt-md="display: grid;
+                                              grid-template-columns: repeat(3, 300px);
+                                              grid-gap: 5px;
+                                              grid-auto-rows: minmax(100px, auto);
+                                              justify-content: center;">
+
+      <mat-card *ngFor="let event of events"
+                ngStyle.gt-md="height: 300px;
+                               margin-right: 5px;
+                               border-radius: 20px 20px 0 0;
+                               display:flex;
+                               flex-direction:column;
+                               padding: 0 0 0;"
+                ngStyle.lt-lg="margin-bottom: 10px;"
+                routerLink="/event/{{ event.uid }}">
+
+        <mat-card-content ngStyle.lt-lg="display: flex;">
+          <div ngStyle.lt-lg="width: 80px;margin-top: auto;margin-bottom: auto;"
+               ngStyle.gt-md="width: inherit;">
+            <img class="logo" fxHide.gt-md  src="{{ event.logo ? event.logo : '../../../assets/default/default_logo.jpg' }}"/>
+            <img class="banner" fxHide.lt-lg src="{{ event.banner ? event.banner : '../../../assets/default/default_banner.jpg' }}"/>
+          </div>
+
+          <div style="width: 90%;margin-right: auto; margin-left: auto">
+            <h1 ngStyle.gt-md="margin-bottom: 30px;" style="font-size:16px; font-weight: bold;">{{ event.name }}</h1>
+            <p class="description">{{ event.description }}</p>
+          </div>
+
+          <div ngStyle.lt-lg="position: absolute;
+                              right: 0;
+                              top: 10%;"
+               ngStyle.gt-md="position: absolute;
+                              left: 0;
+                              bottom: 0;"
+               class="icons">
+
+          </div>
+
+          <div class="localisation"
+               ngStyle.lt-lg="right: 5px;
+                              bottom: 5px;"
+               ngStyle.gt-md="left: 20px;
+                              bottom: 32px">
+            <span>{{ event.address }}</span>
+          </div>
+          <div class="date"
+               ngStyle.lt-lg="right: 5px;
+                              bottom: 5px;"
+               ngStyle.gt-md="left: 20px;
+                              bottom: 32px">
+            <span ngStyle.gt-md="  position: absolute;bottom: 5px;left: 10px;">{{ event.date_begin | date:"dd/MM/yyyy" }}</span>
+          </div>
+
+          <div class="show-more" fxHide.lt-lg>
+            <button mat-button routerLink="/event/{{ event.uid }}">Voir l'événement
+              <fa-icon [icon]="['fas', 'chevron-right']"></fa-icon>
+            </button>
+          </div>
+
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+
+  <div class="association-list">
+    <div class="list-header" ngStyle.gt-md="margin-right: 25%;margin-left: 25%;">
+      <h3>Dernières associations</h3>
+      <button class="show-all" mat-raised-button routerLink="/associations">voir tous
+        <fa-icon [icon]="['fas', 'chevron-right']"></fa-icon>
+      </button>
+    </div>
+    <div class="association-content" ngStyle.gt-md="display: grid;
+                                                    grid-template-columns: repeat(3, 300px);
+                                                    grid-gap: 5px;
+                                                    grid-auto-rows: minmax(100px, auto);
+                                                    justify-content: center;">
+
+      <mat-card *ngFor="let association of associations"
+                ngStyle.gt-md="height: 300px;
+                               margin-right: 5px;
+                               border-radius: 20px 20px 0 0;
+                               display:flex;
+                               flex-direction:column;
+                               padding: 0 0 0;"
+                ngStyle.lt-lg="margin-bottom: 10px;"
+                routerLink="/association/{{ association.uid }}">
+
+        <mat-card-content ngStyle.lt-lg="display: flex;">
+          <div ngStyle.lt-lg="width: 80px;margin-top: auto;margin-bottom: auto;"
+               ngStyle.gt-md="width: inherit;">
+            <img class="logo" fxHide.gt-md alt="logo de l'association {{association.name}}"
+                 src="{{ association.logo }}"/>
+            <img class="banner" fxHide.lt-lg alt="bannière de l'association {{ association.name }}"
+                 src="{{ association.banner }}"/>
+          </div>
+
+          <div style="width: 90%;margin-right: auto; margin-left: auto">
+            <h1 ngStyle.gt-md="margin-bottom: 30px;"
+                style="font-size:16px; font-weight: bold;">{{ association.name }}</h1>
+            <p class="description">{{ association.description }}</p>
+          </div>
+
+          <div ngStyle.lt-lg="position: absolute;
+                              right: 0;
+                              top: 10%;"
+               ngStyle.gt-md="position: absolute;
+                              left: 0;
+                              bottom: 0;"
+               class="icons">
+
+          </div>
+
+          <div class="localisation"
+               ngStyle.lt-lg="right: 5px;
+                              bottom: 5px;"
+               ngStyle.gt-md="left: 20px;
+                              bottom: 32px">
+            <span>{{ association.address }}</span>
+          </div>
+
+          <div class="show-more" fxHide.lt-lg>
+            <button mat-button routerLink="/association/{{association.uid}}">Voir l'association
+              <fa-icon [icon]="['fas', 'chevron-right']"></fa-icon>
+            </button>
+          </div>
+
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+
+  <div class="newsletter">
+    <h1>Newsletter</h1>
+    <p>Recevez les prochaines actualités près de chez vous</p>
+    <form>
+        <mat-form-field appearance="legacy" ngStyle.gt-xs="margin-right: 20px;">
+          <mat-label>Votre adresse email :</mat-label>
+          <input matInput type="email" required>
+        </mat-form-field>
+        <br fxHide.gt-xs/>
+        <mat-form-field appearance="legacy">
+          <mat-label>Votre ville</mat-label>
+          <input matInput type="text" required>
+        </mat-form-field>
+      <br/>
+      <button mat-raised-button style="border-radius: 20px;">S'abonner</button>
+    </form>
+  </div>
+</div>

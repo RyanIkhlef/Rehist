@@ -1,0 +1,54 @@
+<main>
+  <h1 *ngIf="!isPageRecruitement">Contacter l'association<br/>
+    <span>« {{association?.name}} »</span>
+  </h1>
+  <h1 *ngIf="isPageRecruitement">Rejoindre l'association<br/>
+    <span>« {{association?.name}} »</span>
+  </h1>
+
+  <div *ngIf="isPageRecruitement && association?.recruitment">
+    <h3>Nos conditions de recrutement : </h3>
+    <p>{{association?.conditions_recruitment}}</p>
+  </div>
+  <div *ngIf="isPageRecruitement && !association?.recruitment">
+    <h3>Nos conditions de recrutement : </h3>
+    <p>Désolé, notre association ne recrute pas</p>
+  </div>
+  <form [formGroup]="formGroup" (ngSubmit)="onSubmit()">
+    <div class="contact_form">
+      <h3>Vos coordonnées : </h3>
+      <mat-form-field class="example-full-width" appearance="standard">
+        <mat-label>Nom</mat-label>
+        <input formControlName="nom" matInput>
+      </mat-form-field>
+      <mat-form-field class="example-full-width" appearance="standard">
+        <mat-label>Prénom</mat-label>
+        <input formControlName="prenom" matInput>
+      </mat-form-field>
+      <mat-form-field class="example-full-width" appearance="standard">
+        <mat-label>Ville</mat-label>
+        <input formControlName="ville" Name="ville" matInput>
+      </mat-form-field>
+      <mat-form-field class="example-full-width" appearance="standard">
+        <mat-label>Adresse email</mat-label>
+        <input formControlName="email" matInput required>
+      </mat-form-field>
+      <mat-form-field class="example-full-width" appearance="standard">
+        <mat-label>Téléphone</mat-label>
+        <input formControlName="tel" matInput>
+      </mat-form-field>
+      <h3>Votre message : </h3>
+      <mat-form-field class="example-full-width" appearance="standard">
+        <mat-label>Objet</mat-label>
+        <input formControlName="object" matInput placeholder="titre du sujet" required>
+      </mat-form-field>
+      <mat-form-field class="example-full-width" appearance="standard">
+        <mat-label>Message</mat-label>
+        <textarea formControlName="message" matInput placeholder="votre message" required></textarea>
+      </mat-form-field>
+    </div>
+    <div class="btn_group">
+      <button type="submit" mat-raised-button color="primary" [disabled]="formGroup.invalid">Envoyer</button>
+    </div>
+  </form>
+</main>

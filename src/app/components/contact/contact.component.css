@@ -1,0 +1,48 @@
+main {
+  width: 95%;
+  margin-right: auto;
+  margin-left: auto;
+}
+h1 {
+  text-align: center;
+  margin: 20px;
+}
+
+span {
+  font-style: italic;
+}
+
+p {
+  text-align: center;
+}
+
+.contact_form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+h3 {
+  margin-top: 20px;
+  font-weight: bold;
+  text-align: center;
+}
+
+.btn_group {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+button {
+  width: 120px;
+}
+
+textarea {
+  height: 150px;
+}
+
+mat-divider {
+  margin-top: 20px;
+  margin-bottom: 10px;
+}

@@ -1,0 +1,54 @@
+<img class="banner" *ngIf="association && association.banner" src="{{association.banner}}" alt="bannière"/>
+<img class="banner" *ngIf="association && !association.banner" src="../../../assets/default/default_banner.jpg"
+     alt="bannière"/>
+<main>
+  <div id="header_event" *ngIf="association">
+    <img class="logo" *ngIf="association.logo" src="{{association.logo}}" alt="logo"/>
+    <img class="logo" *ngIf="!association.logo" src="../../../assets/default/default_logo.jpg" alt="logo"/>
+  </div>
+  <div id="slider">
+    <mat-slide-toggle name="photo" [checked]="true" (change)="toogleChange($event)">Photos</mat-slide-toggle>
+    <mat-slide-toggle name="video" [checked]="true" (change)="toogleChange($event)">Vidéos</mat-slide-toggle>
+  </div>
+  <div id="result">
+    <p><span>{{allMediasDisplay.length}}</span> résultats</p>
+    <mat-form-field appearance="standard">
+      <mat-label>Trier par</mat-label>
+      <mat-select (selectionChange)="trie($event.value)">
+        <mat-option value="ASC">Date de publication croissante</mat-option>
+        <mat-option value="DESC">Date de publication décroissante</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <div class="element_grpe">
+    <p *ngIf="allMediasDisplay.length == 0">Aucun média disponible pour cette association</p>
+    <mat-card *ngIf="isUploading" class="element">
+      <mat-spinner></mat-spinner>
+    </mat-card>
+    <mat-card *ngFor="let media of allMediasDisplay; " class="element">
+      <button *ngIf="isCreator" mat-icon-button [matMenuTriggerFor]="menu" aria-label="Editer">
+        <mat-icon>more_vert</mat-icon>
+      </button>
+      <mat-menu #menu>
+        <button (click)="openDialog(media)" mat-menu-item>
+          <span>Modifier</span>
+        </button>
+        <button mat-menu-item (click)="deleteMedia(media)">
+          <span>Supprimer</span>
+        </button>
+      </mat-menu>
+
+      <img *ngIf="media.type === 'photo'" src="{{media.lien}}" alt="{{media.titre}}"/>
+      <iframe *ngIf="media.type === 'video'" [src]="media.lien | safe" title="{{media.titre}}">
+      </iframe>
+      <h5>{{media.titre}}</h5>
+      <div class="element_bottom">
+        <p id="lieu">{{media.lieu}}</p>
+        <p>{{media.date | date:"dd/MM/yyyy"}}</p>
+      </div>
+    </mat-card>
+    </div>
+  <button *ngIf="isCreator" class="addMedia" mat-fab color="primary" aria-label="Ajouter un média" (click)="addPortfolio()">
+    <mat-icon>add</mat-icon>
+  </button>
+</main>

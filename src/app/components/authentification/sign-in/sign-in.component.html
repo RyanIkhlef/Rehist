@@ -1,0 +1,31 @@
+<div class="wrapper">
+  <h1>Connexion</h1>
+  <p style="font-style: italic;">Les champs possédant un astérisque (*) sont obligatoire.</p>
+  <form [formGroup]="signInForm"
+        (ngSubmit)="onSubmit()">
+    <mat-form-field appearance="legacy">
+      <mat-label>Email</mat-label>
+      <input matInput formControlName="email" type="email" placeholder="dupont@exemple.com" required>
+    </mat-form-field>
+
+    <mat-form-field appearance="legacy">
+      <mat-label>Mot de passe</mat-label>
+      <input matInput formControlName="password" type="password" required>
+    </mat-form-field>
+
+    <button mat-raised-button type="submit" style="background-color:#33658A; color:white" [disabled]="signInForm.invalid">Connexion</button>
+  </form>
+  <p>
+    Pas de compte ? <a routerLink="/sign-up" style="font-style: italic;">Inscrivez-vous !</a> <br />
+    <a routerLink="/reset-password">Mot de passe oublié ? </a>
+  </p>
+
+  <div class="signIn-with">
+    <h4>Se connecter avec</h4>
+    <div>
+      <img (click)="onFacebookSignIn()" alt="Facebook" src="assets/authentification/logo_facebook.png" title="Créer compte avec votre compte Facebook" />
+      <img (click)="onTwitterSignIn()" alt="Twitter" src="assets/authentification/logo_twiter.png" title="Créer compte avec votre compte Twitter" />
+      <img (click)="onGoogleSignIn()" alt="Google" src="assets/authentification/logo_google.png" title="Créer compte avec votre compte Google" />
+    </div>
+  </div>
+</div>

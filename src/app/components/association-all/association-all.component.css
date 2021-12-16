@@ -1,0 +1,110 @@
+h2 {
+  text-align: center;
+  margin-top: 20px;
+}
+.list {
+  margin-bottom: 50px;
+}
+form {
+  margin: 0 20px 0 20px;
+  display: grid;
+}
+
+.search_bar mat-icon {
+  position: absolute;
+  right: 20px;
+  color: #33658A;
+  font-weight: bolder;
+  font-size: 18px;
+}
+
+.period {
+  width: 200px;
+}
+
+.secondary_inputs .geolocation {
+  display: flex;
+  flex-direction: row;
+}
+
+.geolocation mat-form-field {
+  width: 150px;
+}
+
+.secondary_inputs {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.secondary_inputs mat-form-field {
+  padding: 5px;
+}
+.reset_button {
+  color: #F6AE2D;
+  margin-left: 15px;
+}
+
+.association-list {
+  margin-top: 25px;
+}
+
+mat-card {
+  margin: 0 5px 0 5px;
+}
+
+mat-card:hover {
+  cursor: pointer;
+}
+
+mat-card-content img.logo {
+  max-height: 60px;
+  max-width: 60px;
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+mat-card-content img.banner {
+  max-height: 100px;
+  width: 100%;
+  object-fit: cover;
+  border-radius: 20px 20px 0 0;
+}
+
+mat-card-content h1 {
+  margin-bottom: 0;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.icons {
+  height: 32px;
+  width: 100px;
+}
+
+.localisation {
+  color: #C1C1C1;
+  position: absolute;
+}
+
+p.description {
+  height: 40px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-bottom: 20px;
+}
+
+.show-more {
+  color: #33658A;
+  position: absolute;
+  right: 0;
+  bottom:0;
+}
+
+.filter {
+  padding-bottom: 10px;
+}
+
+.period, .unit {
+  width: 100px;
+}

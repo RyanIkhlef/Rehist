@@ -1,0 +1,30 @@
+<div class="wrapper">
+  <h2>Vos paramètres</h2>
+
+  <div *ngIf="user" class="dataWrapper">
+    <mat-card>
+      <mat-card-content>
+        <p><span fxHide.lt-lg>Votre nom : </span><span>{{ user.firstname }}</span></p>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card>
+      <mat-card-content>
+        <p><span fxHide.lt-lg>Votre prénom : </span><span>{{ user.lastname }}</span></p>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card>
+      <mat-card-content>
+        <p><span fxHide.lt-lg>Votre email : </span><span>{{ user.email }}</span></p>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <div class="buttonsWrapper">
+    <button mat-raised-button type="button" routerLink="/myAssociations" class="myPage">Mes associations</button>
+    <button mat-raised-button type="button" routerLink="/myEvents" class="myPage">Mes événements</button>
+    <button mat-raised-button type="button" (click)="onResetPassword()" class="changePassword">Changer de mot de passe</button>
+    <button mat-raised-button type="button" (click)="onDeleteData()" class="deleteData">Supprimer mes données</button>
+  </div>
+</div>
